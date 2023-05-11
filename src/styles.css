@@ -1,0 +1,24 @@
+:root {
+    --main-color: #F7583C;
+    --secondary-color: #316BB7;
+    --gray-color: #EBF1F5;
+    --white-color: #FFF;
+    --black-color: #000
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Montserrat', sans-serif;
+}
+
+/* -----------> Agrego codigo responsive aca <----------- */
+/* Primero se genera todo el css para mobile y luego la version de escritorio se codifica dentro del media query */
+
+@media (min-width: 950px) {
+
+    /* -----------> Agrego codigo desktop aca <----------- */
+
+}
