@@ -3,10 +3,6 @@ import { Link } from 'react-router-dom';
 
 export const RecipeItem = ({ _id, imagePath, name, description, ingredients }) => {
 
-    const onDeleteRecipe = () => {
-        console.log('onDeleteRecipe');
-    }
-
     return (
         <div className="card">
             <img src={ imagePath } className="card-img-top" alt={ name } />
@@ -29,7 +25,7 @@ export const RecipeItem = ({ _id, imagePath, name, description, ingredients }) =
             </div>
             <div className="card-footer d-flex justify-content-between">
                 <Link className="btn btn-primary" to={`/receta/${_id}`}><i className="bi bi-card-text"></i> Detalles</Link>
-                <button className="btn btn-danger" onClick={ onDeleteRecipe }><i className="bi bi-trash"></i> Eliminar</button>
+                <button className="btn btn-danger"><i className="bi bi-trash"></i> Eliminar</button>
             </div>
         </div>
     )

@@ -19,6 +19,6 @@ export const useFetchRecipes = (userToken) => {
 
     return {
         recipeList,
-        loading
+        loading,
     }
 }
