@@ -1,5 +1,4 @@
 
-
 export const fetchAuth = async (requestBody, endpoint) => {
 
     const url = `https://backend-recipes-bootcamps-tribe-production.up.railway.app/api/auth/${endpoint}`;
@@ -22,8 +21,6 @@ export const fetchAuth = async (requestBody, endpoint) => {
     } catch(error) {
 
         console.error(`ERROR: ${error}`);
-
-        return;
 
     }
 

@@ -154,6 +154,24 @@ body {
     background-color: var(--black-color);
 }
 
+#cards-wrapper {
+    padding: 20px 0px
+}
+
+#cards-wrapper .recipe-card-link {
+    cursor: pointer;
+    text-decoration: none;
+}
+
+#cards-wrapper .card {
+    transition: all .5s;
+}
+
+#cards-wrapper .card:hover {
+    cursor: pointer;
+    border-color: var(--main-color);
+}
+
 @media (min-width: 950px) {
 
     /* -----------> Agrego codigo desktop aca <----------- */
