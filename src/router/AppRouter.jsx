@@ -7,10 +7,6 @@ import { LoginPage } from '../auth/pages/LoginPage';
 import { RegisterPage } from '../auth/pages/RegisterPage';
 import { RecipeRouter } from '../recipe/routes/RecipeRouter'
 
-/*
-    TODO:
-    Agregar rutas publicas y privadas
-*/
 
 export const AppRouter = () => {
 

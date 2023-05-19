@@ -158,9 +158,8 @@ body {
     padding: 20px 0px
 }
 
-#cards-wrapper .recipe-card-link {
-    cursor: pointer;
-    text-decoration: none;
+#cards-wrapper .card-img-top {
+    height: 225px;
 }
 
 #cards-wrapper .card {
@@ -168,7 +167,6 @@ body {
 }
 
 #cards-wrapper .card:hover {
-    cursor: pointer;
     border-color: var(--main-color);
 }
 

@@ -8,8 +8,16 @@ export const fetchDeleteRecipe = async (recipeId, userTokem) => {
         }
     }
 
-    const res = await fetch(url, requestOptions);
-    const data = await res.json();
 
-    return data;
+    try {
+
+        const res = await fetch(url, requestOptions);
+        const data = await res.json();
+    
+        return data;
+
+    } catch(error) {
+        console.error(`ERROR: ${error}`);
+        return error;
+    }
 }

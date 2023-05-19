@@ -1,16 +1,40 @@
 import { useEffect, useState } from "react";
 
-import { fetchRecipes } from '../helpers/fetchRecipes';
+import { fetchGetRecipes } from '../helpers/fetchGetRecipes';
+import { fetchAddRecipe } from "../helpers/fetchAddRecipe";
+import { fetchDeleteRecipe } from "../helpers/fetchDeleteRecipe";
+
 
 export const useFetchRecipes = (userToken) => {
 
     const [ recipeList, setRecipeList ] = useState([]);
-    const [ loading, setLoading ] = useState(true);
+    // const [ loading, setLoading ] = useState(true);
+    // Generar un useState que maneje la respuesta del servicio para usarla fuera del hook
 
     const getRecipeList = async () => {
-        const recipeList = await fetchRecipes(userToken);
-        setRecipeList(recipeList);
-        setLoading(false);
+        const list = await fetchGetRecipes(userToken);
+        setRecipeList(list);
+    }
+
+    const addNewRecipe = (requestBody) => {
+        fetchAddRecipe(requestBody, userToken)
+            .then(res => {
+                console.log(res);
+                getRecipeList();
+            });
+    }
+
+    const editRecipe = (requestBody) => {
+        console.log(requestBody);
+    }
+
+    const deleteRecipe = (recipeId) => {
+        fetchDeleteRecipe(recipeId, userToken)
+            .then(res => {
+                console.log(res);
+                const recipeDeleted = recipeList.filter(recipe => recipe._id !== recipeId);
+                setRecipeList([...recipeDeleted]);
+            })
     }
 
     useEffect(() => {
@@ -19,6 +43,8 @@ export const useFetchRecipes = (userToken) => {
 
     return {
         recipeList,
-        loading,
+        addNewRecipe,
+        editRecipe,
+        deleteRecipe,
     }
 }

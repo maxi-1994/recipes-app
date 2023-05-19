@@ -30,13 +30,6 @@ export const Navbar = () => {
                                     Listado Recetas
                                 </NavLink>
                             </li>
-                            <li className="nav-item">
-                                <NavLink className={ ({isActive}) => `nav-item nav-link ${isActive ? 'active' : ''}`} 
-                                    to="/agregar"
-                                >
-                                    Agregar Receta
-                                </NavLink>
-                            </li>
                         </ul>
                         <div className="user-dropdown dropdown">
                             <button className="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
