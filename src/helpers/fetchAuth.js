@@ -22,6 +22,8 @@ export const fetchAuth = async (requestBody, endpoint) => {
 
         console.error(`ERROR: ${error}`);
 
+        return error;
+
     }
 
 }
