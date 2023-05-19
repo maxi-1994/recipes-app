@@ -13,9 +13,7 @@ export const RecipeList = () => {
 
     const { authState } = useContext(AuthContext)
     const { user } = authState;
-
     const { recipeList, addNewRecipe, deleteRecipe } = useFetchRecipes(user.idToken);
-
     const { show, handleClose, handleShow } = useModal();
 
     return (
