@@ -1,20 +1,20 @@
 import { useContext } from 'react';
-
 import Button from 'react-bootstrap/Button';
 
-import { AuthContext } from '../../auth/context/AuthContext';
-import { useFetchRecipes } from '../../hooks/useFetchRecipes';
+import { RecipeContext } from '../context/RecipeContext';
+
 import { useModal } from '../../hooks/useModal';
-import { RecipeItem } from './RecipeItem';
 import { ModalForm } from './ModalForm';
+import { RecipeItem } from './RecipeItem';
 
 
 export const RecipeList = () => {
 
-    const { authState } = useContext(AuthContext)
-    const { user } = authState;
-    const { recipeList, addNewRecipe, deleteRecipe } = useFetchRecipes(user.idToken);
+    // TODO -> Agregar Loading antes de uqe lleguen las recetas
+
     const { show, handleClose, handleShow } = useModal();
+
+    const { recipeList, addNewRecipe, deleteRecipe } = useContext(RecipeContext);
 
     return (
         <>

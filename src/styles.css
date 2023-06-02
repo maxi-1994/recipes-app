@@ -170,8 +170,54 @@ body {
     border-color: var(--main-color);
 }
 
+#recipe .buttons-wrapper {
+    display: flex;
+    justify-content: space-between;
+    margin: 20px 0 0 0;
+}
+
+#recipe .recipe-wrapper {
+    display: block;
+    margin: 20px 0 0 0;
+    padding: 0 20px;
+}
+
+#recipe .recipe-details {
+    margin: 30px 0 0 0;
+}
+
+#recipe .recipe-details p {
+    text-align: justify;
+    margin: 15px 0 0 0;
+}
+
+#recipe .ingredients-wrapper {
+    margin: 30px 0 0 0;
+    padding: 0 20px;
+}
+
+#recipe .ingredients-list {
+    text-transform: capitalize;
+    list-style: none;
+    margin: 20px 0 0 0;
+    padding: 0;
+}
+
 @media (min-width: 950px) {
 
-    /* -----------> Agrego codigo desktop aca <----------- */
+    #recipe .recipe-wrapper {
+        display: flex;
+        justify-content: space-between;
+        padding: 0;
+    }
+
+    #recipe .recipe-img-wrapper { width: 50%; }
+
+    #recipe .recipe-details { 
+        width: 50%; 
+        margin: 0; 
+    }
+
+    #recipe .ingredients-wrapper { text-align: center;}
 
 }

@@ -1,6 +1,6 @@
 
 export const fetchDeleteRecipe = async (recipeId, userTokem) => {
-    const url = `https://backend-recipes-bootcamps-tribe-production.up.railway.app/api/recipes/delete/${recipeId}?auth=${userTokem}`;
+    const url = `https://backend-recipes-bootcamps-tribe.onrender.com/api/recipes/delete/${recipeId}?auth=${userTokem}`;
     const requestOptions = {
         method: 'DELETE',
         headers: {

@@ -1,7 +1,7 @@
 
 export const fetchAuth = async (requestBody, endpoint) => {
 
-    const url = `https://backend-recipes-bootcamps-tribe-production.up.railway.app/api/auth/${endpoint}`;
+    const url = `https://backend-recipes-bootcamps-tribe.onrender.com/api/auth/${endpoint}`;
         
     const requestOptions = {
         method: 'POST',

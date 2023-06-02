@@ -3,6 +3,8 @@ import { Routes, Route } from 'react-router-dom';
 import { PrivateRoute } from './PrivateRoute';
 import { PublicRoute } from './PublicRoute';
 
+import { RecipeProvider } from '../recipe/context/RecipeProvider';
+
 import { LoginPage } from '../auth/pages/LoginPage';
 import { RegisterPage } from '../auth/pages/RegisterPage';
 import { RecipeRouter } from '../recipe/routes/RecipeRouter'
@@ -28,7 +30,9 @@ export const AppRouter = () => {
 
                 <Route path='/*' element={ 
                     <PrivateRoute>
-                        <RecipeRouter /> 
+                        <RecipeProvider>
+                            <RecipeRouter />
+                        </RecipeProvider>
                     </PrivateRoute>
                 } />
             </Routes>

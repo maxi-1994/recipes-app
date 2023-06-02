@@ -4,7 +4,7 @@ import { AuthContext } from "./AuthContext"
 
 
 export const AuthProvider = ({ children }) => {
-
+    
     const { authState, login, logout } = useAuth();
     
     return (

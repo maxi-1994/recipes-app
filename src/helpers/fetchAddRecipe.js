@@ -1,5 +1,5 @@
 export const fetchAddRecipe = async (requestBody, userToken) => {
-    const url = `https://backend-recipes-bootcamps-tribe-production.up.railway.app/api/recipes/add?auth=${userToken}`;
+    const url = `https://backend-recipes-bootcamps-tribe.onrender.com/api/recipes/add?auth=${userToken}`;
 
     const requestOptions = {
         method: 'POST',

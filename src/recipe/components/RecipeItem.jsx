@@ -7,7 +7,7 @@ export const RecipeItem = ({ recipeItems, onDeleteRecipe }) => {
     return (
         <div className="col">
             <div className="card">
-                <img src={ recipeItems.imagePath } className="card-img-top" alt={ name } />
+                <img src={ recipeItems.imagePath } className="card-img-top" alt={ recipeItems.name } />
                 <div className="card-body">
                     <h5 className="card-title">{ recipeItems.name }</h5>
                     <p className="card-text">{ recipeItems.description }</p>
@@ -38,3 +38,10 @@ RecipeItem.propTypes = {
     recipeItems: PropTypes.object.isRequired,
     onDeleteRecipe: PropTypes.func.isRequired,
 };
+
+// customHook de recipe hecho -> lo centralice en un context para poder hacer el edit que lo hago redirigiendo a otra pantalla
+// y tomo el id de la url. asi que estoy con el edit 
+
+// usuario se borra solo
+
+// re-renderizado en el getAllRecipes
