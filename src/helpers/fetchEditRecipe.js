@@ -1,8 +1,11 @@
-export const fetchAddRecipe = async (requestBody, userToken) => {
-    const url = `https://backend-recipes-bootcamps-tribe.onrender.com/api/recipes/add?auth=${userToken}`;
+
+
+export const fetchEditRecipe = async (requestBody, userToken) => {
+
+    const url = `https://backend-recipes-bootcamps-tribe.onrender.com/api/recipes/edit/${ requestBody._id }?auth=${ userToken }`;
 
     const requestOptions = {
-        method: 'POST',
+        method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
         },
@@ -20,4 +23,5 @@ export const fetchAddRecipe = async (requestBody, userToken) => {
         console.error(`ERROR: ${error}`);
         return error;
     }
+
 }

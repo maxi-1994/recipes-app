@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 
 export const RecipeItem = ({ recipeItems, onDeleteRecipe }) => {
 
+    // TODO: Componentizar lista de ingredientes -> usar IngredientsList component
+
     return (
         <div className="col">
             <div className="card">
@@ -14,10 +16,14 @@ export const RecipeItem = ({ recipeItems, onDeleteRecipe }) => {
 
                     <h6>Ingredientes</h6>
                     {
-                        recipeItems.ingredients && recipeItems.ingredients.lenght > 0 ?
+                        recipeItems.ingredients && recipeItems.ingredients.length > 0 ?
                         (
                             <ul>
-                                <li>{ recipeItems.ingredients }</li>
+                                {
+                                    recipeItems.ingredients.map( item => (
+                                        <li key={ item.name }>{ item.name }</li>
+                                    ))
+                                }
                             </ul>
                         ) :
                         (

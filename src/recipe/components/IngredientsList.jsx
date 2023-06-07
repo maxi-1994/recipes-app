@@ -14,7 +14,7 @@ export const IngredientsList = ({ ingredientsList }) => {
                         <ul className="ingredients-list">
                         {
                             ingredientsList.map( ingredient => (
-                                <li key={ ingredient }>{ ingredient }</li>
+                                <li key={ ingredient.name }>{ ingredient.name }</li>
                             ))
                         }
                         </ul>
@@ -22,7 +22,7 @@ export const IngredientsList = ({ ingredientsList }) => {
                 ) :
                 (
                     <div className="alert alert-warning mt-3" role="alert">
-                        Esta receta tiene ingredientes cargados
+                        Esta receta no tiene ingredientes cargados
                     </div>
                 )
             }
