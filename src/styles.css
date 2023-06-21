@@ -204,6 +204,7 @@ body {
     padding: 0 20px;
 }
 
+/* TODO: ingredientes-list no tiene que esta seleccionado por el id recipe, por que no lo esta tomando el recipeList */
 #recipe .ingredients-list {
     text-transform: capitalize;
     list-style: none;

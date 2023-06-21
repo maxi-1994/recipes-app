@@ -1,10 +1,10 @@
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
+import { IngredientsList } from '../components/IngredientsList';
+
 
 export const RecipeItem = ({ recipeItems, onDeleteRecipe }) => {
-
-    // TODO: Componentizar lista de ingredientes -> usar IngredientsList component
 
     return (
         <div className="col">
@@ -14,22 +14,8 @@ export const RecipeItem = ({ recipeItems, onDeleteRecipe }) => {
                     <h5 className="card-title">{ recipeItems.name }</h5>
                     <p className="card-text">{ recipeItems.description }</p>
 
-                    <h6>Ingredientes</h6>
-                    {
-                        recipeItems.ingredients && recipeItems.ingredients.length > 0 ?
-                        (
-                            <ul>
-                                {
-                                    recipeItems.ingredients.map( item => (
-                                        <li key={ item.name }>{ item.name }</li>
-                                    ))
-                                }
-                            </ul>
-                        ) :
-                        (
-                            <p className="card-text">Esta receta no tiene ingredientes cargados</p>
-                        )
-                    }
+                    <IngredientsList ingredientsList={ recipeItems.ingredients } isEditable={ false } />
+
                 </div>
                 <div className="card-footer d-flex justify-content-between">
                     <Link className="btn btn-primary" to={`/receta/${recipeItems._id}`}><i className="bi bi-card-text"></i> Detalles</Link>

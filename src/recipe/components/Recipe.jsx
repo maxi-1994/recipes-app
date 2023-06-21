@@ -1,20 +1,18 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { useContext, useState } from 'react';
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import { AuthContext } from '../../auth/context/AuthContext';
 import { RecipeContext } from '../context/RecipeContext';
 import { useForm } from '../../hooks/useForm';
+import { useIngredients } from '../../hooks/useIngredients';
 import { IngredientsList } from './IngredientsList';
-
-import { toastMesseges } from '../../helpers/constants';
 
 
 export const Recipe = () => {
-
     // TODO: Agregar loading antes de que actualice el componente luego de editarlo
-    // TODO: Agregar styles a la lista de ingredientes + boton borrar
+    // TODO: La url de la imagen esta hardcodeada en el editar
 
     const { authState } = useContext(AuthContext);
     const { editRecipe } = useContext(RecipeContext);
@@ -30,8 +28,9 @@ export const Recipe = () => {
         ingredient: '',
     });
 
-    const [ ingredients, setIngredients ] = useState([]);
-    const [ showForm, setShowForm ] = useState(false);
+    const { ingredients, addIngredient, deleteIngredient } = useIngredients();
+
+    const [ showEditForm, setShowEditForm ] = useState(false);
 
     const navigate = useNavigate();
     
@@ -42,28 +41,13 @@ export const Recipe = () => {
     };
 
     const onShowEditForm = () => {
-        showForm ? setShowForm(false) : setShowForm(true);
+        showEditForm ? setShowEditForm(false) : setShowEditForm(true);
         onResetForm();
-        setIngredients(recipeSelected.ingredients);
     }
 
     const onAddIngredient = () => {
-        const ingredientItem = { name: formState.ingredient.trim() };
-
-        const ingredientExists = ingredients.find(item => item.name === ingredientItem.name);
-        if (ingredientExists) {
-            toast.error(toastMesseges.ingredientExists.title, toastMesseges.ingredientExists.toastConfig);
-            return
-        }
-
-        const newIngredients = [ ...ingredients, ingredientItem ];
-        setIngredients(newIngredients);
+        addIngredient(formState.ingredient);
         formState.ingredient = '';
-    }
-
-    const onDeleteIngredient = (ingredientName) => {
-        const ingredientDeleted = ingredients.filter(item => item.name !== ingredientName);
-        setIngredients([ ...ingredientDeleted ]);
     }
 
     const onSubmitEditForm = (e) => {
@@ -80,7 +64,7 @@ export const Recipe = () => {
         
         editRecipe(formBody);
         onResetForm();
-        setShowForm(false);
+        setShowEditForm(false);
     }
     
     return (
@@ -103,24 +87,24 @@ export const Recipe = () => {
                             <img className="img-thumbnail" src={ recipeSelected.imagePath } alt={ recipeSelected.name } />
                         </div>
                         <div className="recipe-details">
-                            <h3 style={{ display: showForm ? 'none' : 'block' }}>{ recipeSelected.name }</h3>
+                            <h3 style={{ display: showEditForm ? 'none' : 'block' }}>{ recipeSelected.name }</h3>
                             <input 
                                 type="text" 
                                 id="name"
                                 name="name"
                                 className="form-control" 
-                                style={{ display: showForm ? 'block' : 'none' }}
+                                style={{ display: showEditForm ? 'block' : 'none' }}
                                 placeholder="Nombre de la receta"
                                 value={ formState.name }
                                 onChange={ onInputValueChange }
                             />
 
-                            <p style={{ display: showForm ? 'none' : 'block' }}>{ recipeSelected.description }</p>
+                            <p style={{ display: showEditForm ? 'none' : 'block' }}>{ recipeSelected.description }</p>
                             <textarea 
                                 id="description"
                                 name="description"
                                 className="form-control mt-3"
-                                style={{ display: showForm ? 'block' : 'none' }}
+                                style={{ display: showEditForm ? 'block' : 'none' }}
                                 rows="10" 
                                 placeholder="Descripción"
                                 value={ formState.description }
@@ -129,7 +113,7 @@ export const Recipe = () => {
                         </div>
                     </div>
 
-                    <div style={{ display: showForm ? 'block' : 'none' }}>
+                    <div style={{ display: showEditForm ? 'block' : 'none' }}>
                         <div className="d-flex justify-content-between">
                             <input 
                                 type="text"
@@ -150,18 +134,15 @@ export const Recipe = () => {
                             </button>
                         </div>
 
-                        <IngredientsList ingredientsList={ ingredients } isEditable={ true } onDeleteingredient={ onDeleteIngredient } />
-
+                        <IngredientsList ingredientsList={ ingredients } isEditable={ true } onDeleteingredient={ deleteIngredient } />
                     </div>
 
-                   
-
-                    <div style={{ display: showForm ? 'none' : 'block' }}>
+                    <div style={{ display: showEditForm ? 'none' : 'block' }}>
                         <IngredientsList ingredientsList={ recipeSelected.ingredients } isEditable={ false } />
                     </div>
 
                     <div>
-                        <button type="submit" className="btn btn-primary" style={{ display: showForm ? 'block' : 'none' }}>
+                        <button type="submit" className="btn btn-primary" style={{ display: showEditForm ? 'block' : 'none' }}>
                             Guardar cambios
                         </button>
                     </div>
