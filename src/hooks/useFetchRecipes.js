@@ -1,24 +1,28 @@
 import { useEffect, useState } from "react";
+import { toast } from 'react-toastify';
 
 import { fetchGetRecipes } from '../helpers/fetchGetRecipes';
 import { fetchAddRecipe } from "../helpers/fetchAddRecipe";
 import { fetchDeleteRecipe } from "../helpers/fetchDeleteRecipe";
 import { fetchEditRecipe } from "../helpers/fetchEditRecipe";
 
+import { toastMesseges } from '../helpers/constants';
+
 
 export const useFetchRecipes = (userToken) => {
 
-    const [ recipeList, setRecipeList ] = useState([]);
+    // TODO: el getRecipeList es un async/await y los demás no.
 
-    // const [ loading, setLoading ] = useState(true);
-    // Generar un useState que maneje la respuesta del servicio para usarla fuera del hook
+    const [ recipeList, setRecipeList ] = useState([]);
+    const [ loading, setLoading ] = useState(true);
 
     const getRecipeList = async () => {
         const list = await fetchGetRecipes(userToken);
         setRecipeList(list);
         localStorage.setItem('recipeList', JSON.stringify(list));
+        setLoading(false);
 
-        // En vez de generar un reducer, directamente guardo la lista de recetas en localStorage. De esta manera en la url de "detalle" donde saco el id de la url.
+        // En vez de generar un reducer, directamente guardo la lista de recetas en localStorage. Cuando estoy en detalles obtengo el id de la url y busco la receta que matchea con id.
         // busco que coincidan los id dentro de la lista guardada en localStorage
 
         // No me pareció crear un reducer ya que el "recipeList" del useState se va actualizando cada vez que llamo a la API (en el addNewRecipe, editRecipe y deleteRecipe).
@@ -28,35 +32,30 @@ export const useFetchRecipes = (userToken) => {
     const addNewRecipe = (requestBody) => {
         fetchAddRecipe(requestBody, userToken)
             .then(res => {
-                console.log(res);
-                getRecipeList();
-                // setState para menejar las resp del servico
+                if(res.msg) {
+                    getRecipeList();
+                    toast(toastMesseges.newRecipeMsg.title, toastMesseges.newRecipeMsg.toastConfig);
+                } else {
+                    console.log(res.errors);
+                }
             });
     }
 
-    const editRecipe = (requestBody) => {
-        // Method: PUT 
-        // Url: https://backend-recipes-bootcamps-tribe-production.up.railway.app/api/recipes/edit/{{_id }}?auth={{token}}
-        // Cabeceras: Content-Type: application/json
-        
+    const editRecipe = (requestBody) => {        
         fetchEditRecipe(requestBody, userToken)
-            .then(res => {
-                console.log(res);
+            .then(() => {
                 getRecipeList();
-                // setState para menejar las resp del servico
+                toast(toastMesseges.editRecipeMsg.title, toastMesseges.editRecipeMsg.toastConfig);
             });
-
-        // setState para menejar las resp del servico
     }
 
     const deleteRecipe = (recipeId) => {
         fetchDeleteRecipe(recipeId, userToken)
-            .then(res => {
-                console.log(res);
+            .then(() => {
                 const recipeDeleted = recipeList.filter(recipe => recipe._id !== recipeId);
                 setRecipeList([...recipeDeleted]);
                 localStorage.setItem('recipeList', JSON.stringify(recipeDeleted));
-                // setState para menejar las resp del servico
+                toast(toastMesseges.deleteRecipeMsg.title, toastMesseges.deleteRecipeMsg.toastConfig);
             })
     }
 
@@ -66,6 +65,7 @@ export const useFetchRecipes = (userToken) => {
 
     return {
         recipeList,
+        loading,
         addNewRecipe,
         editRecipe,
         deleteRecipe,

@@ -1,5 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 
 import { AuthContext } from '../context/AuthContext';
 import { useForm } from '../../hooks/useForm';
@@ -8,6 +8,7 @@ import { fetchAuth } from '../../helpers/fetchAuth';
 
 export const RegisterPage = () => {
 
+    // TODO: Poner el helper fetchAuth() dentro del AuthContext?
     const { login } = useContext(AuthContext);
 
     const { formState, onInputValueChange, onResetForm } = useForm({
@@ -16,21 +17,23 @@ export const RegisterPage = () => {
         repeatPassword: '',
     });
 
-    const navigate = useNavigate();
-
     const invalidForm = formState.email === '' || 
                         formState.password === '' || 
-                        formState.repeatPassword === '';
+                        formState.repeatPassword === '' ||
+                        formState.password !== formState.repeatPassword;
+
+    const navigate = useNavigate();
+    const [ errorsList, setErrorsList ] = useState([]);
 
     const onSubmitForm = (event) => {
         event.preventDefault();
 
-        if(invalidForm) { return; }
-
         fetchAuth(formState, 'signup')
             .then(userData => {
                 if(userData.errors) {
-                    console.log('Error en validacion', userData.errors);
+                    const errors = userData.errors.map(e => e.msg);
+                    (errorsList.length > 0) ?? setErrorsList([])
+                    setErrorsList([...errors])
                 } else {
                     login(userData);
                     navigate('/', {
@@ -41,7 +44,7 @@ export const RegisterPage = () => {
             });
         
         onResetForm();
-    } 
+    }
 
     return (
         <>
@@ -49,7 +52,16 @@ export const RegisterPage = () => {
                 <div className="auth-content d-flex justify-content-center">
                     <form className="w-75" onSubmit={ onSubmitForm }>
                         <h1 className="text-center">Registro</h1>
-                        <div className="input-content mt-5">
+
+                        <ul className="errors-list">
+                            {
+                                errorsList.map(error => (
+                                    <li key={ error } className="text-danger mt-2">{ error }</li>
+                                ))
+                            }
+                        </ul>
+
+                        <div className="input-content mt-4">
                             <input
                                 type="email"
                                 id="email"

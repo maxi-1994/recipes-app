@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 
 
-export const IngredientsList = ({ ingredientsList }) => {
+export const IngredientsList = ({ ingredientsList, isEditable, onDeleteingredient }) => {
 
     return (
         <>
@@ -14,7 +14,17 @@ export const IngredientsList = ({ ingredientsList }) => {
                         <ul className="ingredients-list">
                         {
                             ingredientsList.map( ingredient => (
-                                <li key={ ingredient.name }>{ ingredient.name }</li>
+                                <div className="ingredient-card" key={ ingredient.name }> 
+                                    <span>{ ingredient.name }</span>
+                                    <button 
+                                        type="button" 
+                                        className="btn btn-danger"
+                                        style={{ display: isEditable ? 'block' : 'none' }} 
+                                        onClick={ () => onDeleteingredient(ingredient.name) }
+                                    >
+                                        <i className="bi bi-trash"></i>
+                                    </button>
+                                </div>
                             ))
                         }
                         </ul>
@@ -31,5 +41,7 @@ export const IngredientsList = ({ ingredientsList }) => {
 }
 
 IngredientsList.propTypes = {
-    ingredientsList: PropTypes.array.isRequired, 
+    ingredientsList: PropTypes.array.isRequired,
+    isEditable: PropTypes.bool.isRequired,
+    onDeleteingredient: PropTypes.func,
 };

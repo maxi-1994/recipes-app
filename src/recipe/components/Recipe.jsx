@@ -1,42 +1,40 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { useContext, useState } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import { AuthContext } from '../../auth/context/AuthContext';
 import { RecipeContext } from '../context/RecipeContext';
 import { useForm } from '../../hooks/useForm';
 import { IngredientsList } from './IngredientsList';
 
+import { toastMesseges } from '../../helpers/constants';
+
 
 export const Recipe = () => {
 
-    {/*
-        TODO:
-        - Generar funcionalidad para mostrar u ocultar formulario de edit
-        - agregar card a la lista de items con boton borrar
-        - no mostrar el componentn "ingredientList" cuando se edita
-        - generar el submit + generar la llamada por fetch en useFetchRecipes
-        - Ver de generar un custom hook para la funcionalidad de ingredientes o para todo el edit
-    */}
-
-    const { editRecipe } = useContext(RecipeContext);
-
-    const { formState, onInputValueChange, onResetForm } = useForm({
-        name: '',
-        description: '',
-        ingredient: '',
-    });
-    const [ ingredients, setIngredients ] = useState([]);
-
-    const navigate = useNavigate();
+    // TODO: Agregar loading antes de que actualice el componente luego de editarlo
+    // TODO: Agregar styles a la lista de ingredientes + boton borrar
 
     const { authState } = useContext(AuthContext);
+    const { editRecipe } = useContext(RecipeContext);
     const { user } = authState;
 
-    const recipeListStorage = JSON.parse(localStorage.getItem('recipeList'));
-
     const { recipeId } = useParams();
+    const recipeListStorage = JSON.parse(localStorage.getItem('recipeList'));
     const recipeSelected = recipeListStorage.find(item => item._id === recipeId);
 
+    const { formState, onInputValueChange, onResetForm } = useForm({
+        name: recipeSelected.name,
+        description: recipeSelected.description,
+        ingredient: '',
+    });
+
+    const [ ingredients, setIngredients ] = useState([]);
+    const [ showForm, setShowForm ] = useState(false);
+
+    const navigate = useNavigate();
+    
     const onBack = () => {
         navigate('/', {
             replace: false
@@ -44,20 +42,29 @@ export const Recipe = () => {
     };
 
     const onShowEditForm = () => {
-        console.log('onShowEditForm');
-        // Mostrar form para editar
+        showForm ? setShowForm(false) : setShowForm(true);
+        onResetForm();
+        setIngredients(recipeSelected.ingredients);
     }
 
     const onAddIngredient = () => {
         const ingredientItem = { name: formState.ingredient.trim() };
-        const newIngredient = [ ...ingredients, ingredientItem ];
-        setIngredients(newIngredient);
+
+        const ingredientExists = ingredients.find(item => item.name === ingredientItem.name);
+        if (ingredientExists) {
+            toast.error(toastMesseges.ingredientExists.title, toastMesseges.ingredientExists.toastConfig);
+            return
+        }
+
+        const newIngredients = [ ...ingredients, ingredientItem ];
+        setIngredients(newIngredients);
         formState.ingredient = '';
     }
 
-    // const onDeleteIngredient = () => {
-    //     console.log('onDeleteIngredient');
-    // }
+    const onDeleteIngredient = (ingredientName) => {
+        const ingredientDeleted = ingredients.filter(item => item.name !== ingredientName);
+        setIngredients([ ...ingredientDeleted ]);
+    }
 
     const onSubmitEditForm = (e) => {
         e.preventDefault();
@@ -65,7 +72,7 @@ export const Recipe = () => {
         const formBody = {
             _id: recipeId,
             description: formState.description,
-            imagePath: 'https://www.rionegro.com.ar/wp-content/uploads/2019/05/locro-criollo-abundante-D_NQ_NP_982225-MLA27393397210_052018-F.jpg',
+            imagePath: 'https://images.themodernproper.com/billowy-turkey/production/posts/2019/Beef-Empanadas-15.jpg?w=800&q=82&fm=jpg&fit=crop&dm=1607710512&s=9a4f102faa12d78c992ca464af2f7e3c',
             ingredients: ingredients,
             name: formState.name,
             userEmail: user.email,
@@ -73,10 +80,13 @@ export const Recipe = () => {
         
         editRecipe(formBody);
         onResetForm();
+        setShowForm(false);
     }
     
     return (
         <>
+            <ToastContainer />
+
             <div id="recipe">
                 <div className="buttons-wrapper">
                     <button type="button" className="btn btn-secondary" onClick={ onBack }>
@@ -93,23 +103,25 @@ export const Recipe = () => {
                             <img className="img-thumbnail" src={ recipeSelected.imagePath } alt={ recipeSelected.name } />
                         </div>
                         <div className="recipe-details">
-                            <h3>{ recipeSelected.name }</h3>
-                                <input 
+                            <h3 style={{ display: showForm ? 'none' : 'block' }}>{ recipeSelected.name }</h3>
+                            <input 
                                 type="text" 
                                 id="name"
                                 name="name"
                                 className="form-control" 
+                                style={{ display: showForm ? 'block' : 'none' }}
                                 placeholder="Nombre de la receta"
                                 value={ formState.name }
                                 onChange={ onInputValueChange }
                             />
 
-                            <p>{ recipeSelected.description }</p>
+                            <p style={{ display: showForm ? 'none' : 'block' }}>{ recipeSelected.description }</p>
                             <textarea 
                                 id="description"
                                 name="description"
-                                className="form-control" 
-                                rows="3" 
+                                className="form-control mt-3"
+                                style={{ display: showForm ? 'block' : 'none' }}
+                                rows="10" 
                                 placeholder="Descripción"
                                 value={ formState.description }
                                 onChange={ onInputValueChange }
@@ -117,40 +129,41 @@ export const Recipe = () => {
                         </div>
                     </div>
 
-                    <div className='d-flex justify-content-between'>
-                        <input 
-                            type="text"
-                            id="ingredient"
-                            name="ingredient"
-                            className="form-control"
-                            placeholder="Ingrediente"
-                            value={ formState.ingredient }
-                            onChange={ onInputValueChange }
-                        />
-                        <button 
-                            type="button" 
-                            className="btn btn-primary" 
-                            onClick={ onAddIngredient }
-                            disabled={ formState.ingredient === '' }
-                        >
-                            Agregar ingrediente
-                        </button>
-                    </div>
-                    
-                    {/* Generar cards para cada item con boton para eliminar -> onDeleteIngredient */}
-                    <ul>
-                        {
-                            ingredients.map(item => (
-                                <li key={item.name}>{item.name}</li>
-                            ))
-                        }
-                    </ul>
+                    <div style={{ display: showForm ? 'block' : 'none' }}>
+                        <div className="d-flex justify-content-between">
+                            <input 
+                                type="text"
+                                id="ingredient"
+                                name="ingredient"
+                                className="form-control"
+                                placeholder="Ingrediente"
+                                value={ formState.ingredient }
+                                onChange={ onInputValueChange }
+                            />
+                            <button 
+                                type="button" 
+                                className="btn btn-primary" 
+                                onClick={ onAddIngredient }
+                                disabled={ formState.ingredient === '' }
+                            >
+                                Agregar ingrediente
+                            </button>
+                        </div>
 
-                    {/* No mostrar en el editar, mostrar solo la lista que voy llenando, cuando se submitea le pega al servicio y actualiza el estado */}
-                    <IngredientsList ingredientsList={ recipeSelected.ingredients } />
+                        <IngredientsList ingredientsList={ ingredients } isEditable={ true } onDeleteingredient={ onDeleteIngredient } />
+
+                    </div>
+
+                   
+
+                    <div style={{ display: showForm ? 'none' : 'block' }}>
+                        <IngredientsList ingredientsList={ recipeSelected.ingredients } isEditable={ false } />
+                    </div>
 
                     <div>
-                        <button type="submit" className="btn btn-primary">Guardar cambios</button>
+                        <button type="submit" className="btn btn-primary" style={{ display: showForm ? 'block' : 'none' }}>
+                            Guardar cambios
+                        </button>
                     </div>
                 </form>
             </div>

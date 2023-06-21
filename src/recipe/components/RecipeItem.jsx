@@ -33,7 +33,7 @@ export const RecipeItem = ({ recipeItems, onDeleteRecipe }) => {
                 </div>
                 <div className="card-footer d-flex justify-content-between">
                     <Link className="btn btn-primary" to={`/receta/${recipeItems._id}`}><i className="bi bi-card-text"></i> Detalles</Link>
-                    <button className="btn btn-danger" onClick={ () => onDeleteRecipe(recipeItems._id) }><i className="bi bi-trash"></i> Eliminar</button>
+                    <button type="button" className="btn btn-danger" onClick={ () => onDeleteRecipe(recipeItems._id) }><i className="bi bi-trash"></i> Eliminar</button>
                 </div>
             </div>
         </div>
@@ -44,10 +44,3 @@ RecipeItem.propTypes = {
     recipeItems: PropTypes.object.isRequired,
     onDeleteRecipe: PropTypes.func.isRequired,
 };
-
-// customHook de recipe hecho -> lo centralice en un context para poder hacer el edit que lo hago redirigiendo a otra pantalla
-// y tomo el id de la url. asi que estoy con el edit 
-
-// usuario se borra solo
-
-// re-renderizado en el getAllRecipes

@@ -12,11 +12,12 @@ export const RecipeProvider = ({ children }) => {
     const { authState } = useContext(AuthContext);
     const { user } = authState;
 
-    const { recipeList, addNewRecipe, deleteRecipe, editRecipe } = useFetchRecipes(user.idToken);
+    const { recipeList, loading, addNewRecipe, deleteRecipe, editRecipe } = useFetchRecipes(user.idToken);
     
     return (
         <RecipeContext.Provider value={{
             recipeList,
+            loading,
             addNewRecipe,
             deleteRecipe,
             editRecipe

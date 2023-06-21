@@ -7,6 +7,8 @@ import { useForm } from '../../hooks/useForm';
 
 export const ModalForm = ({ modalState, onCloseModal, onFormState }) => {
 
+    // TODO: Agregar ingredientes
+
     const { formState, onInputValueChange } = useForm({
         name: '',
         description: '',
@@ -14,12 +16,15 @@ export const ModalForm = ({ modalState, onCloseModal, onFormState }) => {
         imagePath: '',
     });
 
+    const invalidForm = formState.name === '' || 
+                        formState.description === '' || 
+                        formState.imagePath === '';
+
     const onSubmitModalForm = (e) => {
         e.preventDefault();
         onFormState(formState);
         onCloseModal(false);
     }
-
 
     return (
         <Modal show={ modalState } onHide={ () => onCloseModal(false) }>
@@ -70,7 +75,7 @@ export const ModalForm = ({ modalState, onCloseModal, onFormState }) => {
                             onChange={ onInputValueChange }
                         />
                     </div>
-                    <Button type="submit" variant="primary">
+                    <Button type="submit" variant="primary" disabled={ invalidForm }>
                         Agregar
                     </Button>
                 </form>

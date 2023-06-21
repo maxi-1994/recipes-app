@@ -5,17 +5,20 @@ import { AuthContext } from '../context/AuthContext';
 import { useForm } from '../../hooks/useForm';
 import { fetchAuth } from '../../helpers/fetchAuth';
 
+import Swal from "sweetalert2"
+
 
 export const LoginPage = () => {
 
+    // TODO: Poner el helper fetchAuth() dentro del AuthContext/useAuth ???
     const { login } = useContext(AuthContext);
+
+    const navigate = useNavigate();
 
     const { formState, onInputValueChange, onResetForm } = useForm({
         email: '',
         password: '',
     });
-
-    const navigate = useNavigate();
 
     const invalidForm = formState.email === '' || 
                         formState.password === '';
@@ -23,12 +26,13 @@ export const LoginPage = () => {
     const onSubmitForm = (event) => {
         event.preventDefault();
 
-        if(invalidForm) { return; }
-
         fetchAuth(formState, 'login')
             .then(userData => {
                 if(userData.error) {
-                    console.log('Error en validacion', userData.error);
+                    Swal.fire({  
+                        icon: 'error',
+                        text: 'El email o la contraseña son incorrectas',
+                    }); 
                 } else {
                     login(userData);
                     navigate('/', {
