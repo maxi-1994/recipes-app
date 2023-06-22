@@ -11,6 +11,7 @@ import { RecipeItem } from './RecipeItem';
 export const RecipeList = () => {
     
     // TODO -> Fixear spinner loading
+    // TODO -> Cuando expira el token de rompe la app, el servicio devuelve "invalidToken", mostrar un mensaje y volver al login
 
     const { show, handleClose, handleShow } = useModal();
 
