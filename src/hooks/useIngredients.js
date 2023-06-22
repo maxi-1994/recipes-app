@@ -5,9 +5,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import { toastMesseges } from "../helpers/constants";
 
 
-export const useIngredients = () => {
-
-    const [ ingredients, setIngredients ] = useState([]);
+export const useIngredients = (i = []) => {
+    const [ ingredients, setIngredients ] = useState(i);
 
     const addIngredient = (ingredient) => {
         const ingredientItem = { name: ingredient.trim() };

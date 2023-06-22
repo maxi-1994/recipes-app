@@ -21,6 +21,7 @@ export const Recipe = () => {
     const { recipeId } = useParams();
     const recipeListStorage = JSON.parse(localStorage.getItem('recipeList'));
     const recipeSelected = recipeListStorage.find(item => item._id === recipeId);
+    const ingredientsFromRecipe = recipeSelected.ingredients.map(item => { return {name: item.name} });
 
     const { formState, onInputValueChange, onResetForm } = useForm({
         name: recipeSelected.name,
@@ -28,17 +29,12 @@ export const Recipe = () => {
         ingredient: '',
     });
 
-    const { ingredients, addIngredient, deleteIngredient } = useIngredients();
+    const { ingredients, addIngredient, deleteIngredient } = useIngredients(ingredientsFromRecipe);
 
     const [ showEditForm, setShowEditForm ] = useState(false);
 
     const navigate = useNavigate();
-    
-    const onBack = () => {
-        navigate('/', {
-            replace: false
-        })
-    };
+    const onBack = () => navigate('/', { replace: false });
 
     const onShowEditForm = () => {
         showEditForm ? setShowEditForm(false) : setShowEditForm(true);
@@ -133,12 +129,13 @@ export const Recipe = () => {
                                 Agregar ingrediente
                             </button>
                         </div>
-
+                        
+                        {/* TODO: Usar un solo componente, ver de agregar una validacion en el "isEditable" */}
                         <IngredientsList ingredientsList={ ingredients } isEditable={ true } onDeleteingredient={ deleteIngredient } />
                     </div>
 
                     <div style={{ display: showEditForm ? 'none' : 'block' }}>
-                        <IngredientsList ingredientsList={ recipeSelected.ingredients } isEditable={ false } />
+                        <IngredientsList ingredientsList={ ingredients } isEditable={ false } />
                     </div>
 
                     <div>

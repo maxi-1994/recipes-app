@@ -3,18 +3,26 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 
 import { useForm } from '../../hooks/useForm';
+import { useIngredients } from '../../hooks/useIngredients';
+
+import { IngredientsList } from '../components/IngredientsList';
 
 
 export const ModalForm = ({ modalState, onCloseModal, onFormState }) => {
 
-    // TODO: Agregar ingredientes
-
     const { formState, onInputValueChange } = useForm({
         name: '',
         description: '',
-        ingredients: [],
+        ingredients: '',
         imagePath: '',
     });
+    
+    const { ingredients, addIngredient, deleteIngredient } = useIngredients();
+
+    const onAddIngredient = () => {
+        addIngredient(formState.ingredients);
+        formState.ingredients = '';
+    }
 
     const invalidForm = formState.name === '' || 
                         formState.description === '' || 
@@ -22,7 +30,15 @@ export const ModalForm = ({ modalState, onCloseModal, onFormState }) => {
 
     const onSubmitModalForm = (e) => {
         e.preventDefault();
-        onFormState(formState);
+
+        const formBody = {
+            name: formState.name,
+            description: formState.description,
+            ingredients: ingredients,
+            imagePath: formState.imagePath,
+        }
+
+        onFormState(formBody);
         onCloseModal(false);
     }
 
@@ -55,15 +71,6 @@ export const ModalForm = ({ modalState, onCloseModal, onFormState }) => {
                             onChange={ onInputValueChange }
                         />
                     </div>
-                    {/* <div className="form-group">
-                        <label htmlFor="ingredients">Ingredientes</label>
-                        <input 
-                            type="text" 
-                            className="form-control" 
-                            name="ingredients" 
-                            placeholder="Ingredientes"
-                        />
-                    </div> */}
                     <div className="form-group">
                         <label htmlFor="imagePath">Ruta de la imagen</label>
                         <input 
@@ -75,6 +82,29 @@ export const ModalForm = ({ modalState, onCloseModal, onFormState }) => {
                             onChange={ onInputValueChange }
                         />
                     </div>
+                    <div className="d-flex justify-content-between">
+                        <input 
+                            type="text"
+                            id="ingredients"
+                            name="ingredients"
+                            className="form-control"
+                            placeholder="Ingredientes"
+                            value={ formState.ingredients }
+                            onChange={ onInputValueChange }
+                        />
+                        <button 
+                            type="button" 
+                            className="btn btn-primary" 
+                            onClick={ onAddIngredient }
+                            disabled={ formState.ingredients === '' }
+                        >
+                            Agregar ingrediente
+                        </button>
+                    </div>
+                    <div>
+                        <IngredientsList ingredientsList={ ingredients } isEditable={ true } onDeleteingredient={ deleteIngredient } />
+                    </div>
+
                     <Button type="submit" variant="primary" disabled={ invalidForm }>
                         Agregar
                     </Button>
