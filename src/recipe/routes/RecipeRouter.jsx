@@ -14,7 +14,7 @@ export const RecipeRouter = () => {
                 <Routes>
                     <Route path='recetas' element={ <RecipePage /> } />
                     <Route path='receta/:recipeId' element={ <Recipe /> } />
-                    {/* Agregar favoritos */}
+                    {/* TODO: Agregar favoritos */}
 
                     <Route path='/' element={ <Navigate to='recetas' /> } />
                 </Routes>

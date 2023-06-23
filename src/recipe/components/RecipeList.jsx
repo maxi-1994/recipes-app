@@ -27,8 +27,7 @@ export const RecipeList = () => {
 
             {
                 loading && (
-                    <div>Cargando. . .</div>
-                    // <lottie-player src="https://assets8.lottiefiles.com/packages/lf20_d2yblndy.json" background="transparent"  speed="1"  style="width: 300px; height: 300px;" loop controls autoplay></lottie-player>
+                    <lottie-player src="https://assets8.lottiefiles.com/packages/lf20_d2yblndy.json" loop autoplay></lottie-player>
                 )
             }
 
