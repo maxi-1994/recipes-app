@@ -1,4 +1,4 @@
-
+// TODO: Borrar este componente. No se va a usar
 
 export const IngredientCounter = () => {
 

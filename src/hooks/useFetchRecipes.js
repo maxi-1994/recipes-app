@@ -18,6 +18,12 @@ export const useFetchRecipes = (userToken) => {
 
     const getRecipeList = async () => {
         const list = await fetchGetRecipes(userToken);
+        
+        if (list === 'Invalid token') {
+            // TODO -> hacer un logout
+            console.log('Invalid token');
+        }
+
         setRecipeList(list);
         localStorage.setItem('recipeList', JSON.stringify(list));
         setLoading(false);

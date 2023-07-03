@@ -9,9 +9,6 @@ import { ModalForm } from './ModalForm';
 import { RecipeItem } from './RecipeItem';
 
 export const RecipeList = () => {
-    
-    // TODO -> Cuando expira el token de rompe la app, el servicio devuelve "invalidToken", mostrar un mensaje y volver al login
-    // TODO -> Subir a github pages
     // TODO -> Agregar un test
 
     const { show, handleClose, handleShow } = useModal();
