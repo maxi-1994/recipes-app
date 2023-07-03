@@ -33,8 +33,13 @@ export const useFetchRecipes = (userToken) => {
         fetchAddRecipe(requestBody, userToken)
             .then(res => {
                 if(res.msg) {
-                    getRecipeList();
-                    toast.success(toastMesseges.newRecipeMsg.title, toastMesseges.newRecipeMsg.toastConfig);
+                    toast.promise(getRecipeList(), 
+                        {
+                            pending: toastMesseges.newRecipeMsg.loading,
+                            success: toastMesseges.newRecipeMsg.title,
+                            error: toastMesseges.newRecipeMsg.error
+                        }
+                    );
                 } else {
                     console.log(res.errors);
                 }

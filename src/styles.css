@@ -14,7 +14,7 @@ body { font-family: 'Montserrat', sans-serif; }
 #loading-spinner {
     width: 300px !important;
     height: 300px !important;
-    margin: auto;
+    margin: 125px auto 0;
 }
 
 .alert-warning { font-size: 15px; }

@@ -1,6 +1,8 @@
 export const toastMesseges = {
     newRecipeMsg: {
         title: 'Nueva receta agregada',
+        loading: 'Agregando receta',
+        error: 'Hubo un error. . .',
         toastConfig: {
             position: "top-right",
             autoClose: 3000,
