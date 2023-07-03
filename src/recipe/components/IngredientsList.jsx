@@ -9,7 +9,7 @@ export const IngredientsList = ({ ingredientsList, isEditable, onDeleteingredien
                 ingredientsList.length > 0 ?
                 (
                     <div className="ingredients-wrapper">
-                        <h5>Ingredientes:</h5>
+                        <h5 className="mt-3">Lista de ingredientes:</h5>
 
                         <ul className="ingredients-list">
                         {
@@ -32,7 +32,7 @@ export const IngredientsList = ({ ingredientsList, isEditable, onDeleteingredien
                 ) :
                 (
                     <div className="alert alert-warning mt-3" role="alert">
-                        Esta receta no tiene ingredientes cargados
+                        Esta receta aún no tiene ingredientes cargados
                     </div>
                 )
             }

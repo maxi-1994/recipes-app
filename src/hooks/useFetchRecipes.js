@@ -6,7 +6,7 @@ import { fetchAddRecipe } from "../helpers/fetchAddRecipe";
 import { fetchDeleteRecipe } from "../helpers/fetchDeleteRecipe";
 import { fetchEditRecipe } from "../helpers/fetchEditRecipe";
 
-import { toastMesseges } from '../helpers/constants';
+import { toastMesseges } from '../helpers/constants/toast-messages';
 
 
 export const useFetchRecipes = (userToken) => {
@@ -21,12 +21,6 @@ export const useFetchRecipes = (userToken) => {
         setRecipeList(list);
         localStorage.setItem('recipeList', JSON.stringify(list));
         setLoading(false);
-
-        // En vez de generar un reducer, directamente guardo la lista de recetas en localStorage. Cuando estoy en detalles obtengo el id de la url y busco la receta que matchea con id.
-        // busco que coincidan los id dentro de la lista guardada en localStorage
-
-        // No me pareció crear un reducer ya que el "recipeList" del useState se va actualizando cada vez que llamo a la API (en el addNewRecipe, editRecipe y deleteRecipe).
-        // Si hago el reducer seria redundante estar actualizando el estado si ya me viene actualizado del servicio?
     }
 
     const addNewRecipe = (requestBody) => {
@@ -34,18 +28,20 @@ export const useFetchRecipes = (userToken) => {
             .then(res => {
                 if(res.msg) {
                     getRecipeList();
-                    toast(toastMesseges.newRecipeMsg.title, toastMesseges.newRecipeMsg.toastConfig);
+                    toast.success(toastMesseges.newRecipeMsg.title, toastMesseges.newRecipeMsg.toastConfig);
                 } else {
                     console.log(res.errors);
                 }
             });
     }
 
-    const editRecipe = (requestBody) => {        
+    const editRecipe = (requestBody) => {
+        setLoading(true);      
         fetchEditRecipe(requestBody, userToken)
             .then(() => {
                 getRecipeList();
-                toast(toastMesseges.editRecipeMsg.title, toastMesseges.editRecipeMsg.toastConfig);
+                toast.info(toastMesseges.editRecipeMsg.title, toastMesseges.editRecipeMsg.toastConfig);
+                setLoading(false);
             });
     }
 
@@ -55,7 +51,7 @@ export const useFetchRecipes = (userToken) => {
                 const recipeDeleted = recipeList.filter(recipe => recipe._id !== recipeId);
                 setRecipeList([...recipeDeleted]);
                 localStorage.setItem('recipeList', JSON.stringify(recipeDeleted));
-                toast(toastMesseges.deleteRecipeMsg.title, toastMesseges.deleteRecipeMsg.toastConfig);
+                toast.error(toastMesseges.deleteRecipeMsg.title, toastMesseges.deleteRecipeMsg.toastConfig);
             })
     }
 

@@ -1,8 +1,6 @@
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-import { IngredientsList } from '../components/IngredientsList';
-
 
 export const RecipeItem = ({ recipeItems, onDeleteRecipe }) => {
 
@@ -13,9 +11,6 @@ export const RecipeItem = ({ recipeItems, onDeleteRecipe }) => {
                 <div className="card-body">
                     <h5 className="card-title">{ recipeItems.name }</h5>
                     <p className="card-text">{ recipeItems.description }</p>
-
-                    <IngredientsList ingredientsList={ recipeItems.ingredients } isEditable={ false } />
-
                 </div>
                 <div className="card-footer d-flex justify-content-between">
                     <Link className="btn btn-primary" to={`/receta/${recipeItems._id}`}><i className="bi bi-card-text"></i> Detalles</Link>

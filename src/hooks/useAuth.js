@@ -26,6 +26,7 @@ export const useAuth = () => {
 
     const logout = () => {
         localStorage.removeItem('user');
+        localStorage.removeItem('recipeList');
         const action = {
             type: '[Auth] User Logout',
         };

@@ -10,15 +10,12 @@ export const RecipeRouter = () => {
         <>
             <Navbar />
 
-            <div className="container">
-                <Routes>
-                    <Route path='recetas' element={ <RecipePage /> } />
-                    <Route path='receta/:recipeId' element={ <Recipe /> } />
-                    {/* TODO: Agregar favoritos */}
+            <Routes>
+                <Route path='recetas' element={ <RecipePage /> } />
+                <Route path='receta/:recipeId' element={ <Recipe /> } />
 
-                    <Route path='/' element={ <Navigate to='recetas' /> } />
-                </Routes>
-            </div>
+                <Route path='/' element={ <Navigate to='recetas' /> } />
+            </Routes>
         </>
     )
 }

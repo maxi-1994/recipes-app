@@ -5,12 +5,12 @@ import { AuthContext } from '../context/AuthContext';
 import { useForm } from '../../hooks/useForm';
 import { fetchAuth } from '../../helpers/fetchAuth';
 
-import Swal from "sweetalert2"
+import Swal from 'sweetalert2';
 
 
 export const LoginPage = () => {
 
-    // TODO: Poner el helper fetchAuth() dentro del AuthContext/useAuth ???
+    // TODO: Poner el helper fetchAuth() dentro del AuthContext/useAuth
     const { login } = useContext(AuthContext);
 
     const navigate = useNavigate();

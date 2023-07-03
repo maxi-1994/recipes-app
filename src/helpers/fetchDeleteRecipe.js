@@ -1,6 +1,8 @@
+import * as urls from '../helpers/constants/endpoints';
+
 
 export const fetchDeleteRecipe = async (recipeId, userTokem) => {
-    const url = `https://backend-recipes-bootcamps-tribe.onrender.com/api/recipes/delete/${recipeId}?auth=${userTokem}`;
+    const url = `${urls.BaseUrls}recipes/delete/${recipeId}?auth=${userTokem}`;
     const requestOptions = {
         method: 'DELETE',
         headers: {

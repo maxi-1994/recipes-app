@@ -11,12 +11,12 @@ import { IngredientsList } from './IngredientsList';
 
 
 export const Recipe = () => {
-    // TODO: Agregar loading antes de que actualice el componente luego de editarlo
-    // TODO: La url de la imagen esta hardcodeada en el editar
-
     const { authState } = useContext(AuthContext);
-    const { editRecipe } = useContext(RecipeContext);
+    const { editRecipe, loading } = useContext(RecipeContext);
     const { user } = authState;
+
+    const loadingSpinner = loading && (<lottie-player id='loading-spinner' src="https://assets8.lottiefiles.com/packages/lf20_d2yblndy.json" loop autoplay />);
+
 
     const { recipeId } = useParams();
     const recipeListStorage = JSON.parse(localStorage.getItem('recipeList'));
@@ -26,6 +26,7 @@ export const Recipe = () => {
     const { formState, onInputValueChange, onResetForm } = useForm({
         name: recipeSelected.name,
         description: recipeSelected.description,
+        imagePath: recipeSelected.imagePath,
         ingredient: '',
     });
 
@@ -41,9 +42,14 @@ export const Recipe = () => {
         onResetForm();
     }
 
-    const onAddIngredient = () => {
-        addIngredient(formState.ingredient);
-        formState.ingredient = '';
+    const onAddIngredient = ({ _reactName, target, code }) => {
+        if (code === 'Enter' && target.value.length > 0) {
+            addIngredient(target.value);
+            formState.ingredient = '';
+        } else if (_reactName === 'onClick') {
+            addIngredient(formState.ingredient);
+            formState.ingredient = '';
+        }
     }
 
     const onSubmitEditForm = (e) => {
@@ -52,7 +58,7 @@ export const Recipe = () => {
         const formBody = {
             _id: recipeId,
             description: formState.description,
-            imagePath: 'https://images.themodernproper.com/billowy-turkey/production/posts/2019/Beef-Empanadas-15.jpg?w=800&q=82&fm=jpg&fit=crop&dm=1607710512&s=9a4f102faa12d78c992ca464af2f7e3c',
+            imagePath: formState.imagePath,
             ingredients: ingredients,
             name: formState.name,
             userEmail: user.email,
@@ -66,84 +72,109 @@ export const Recipe = () => {
     return (
         <>
             <ToastContainer />
-
+            
             <div id="recipe">
                 <div className="buttons-wrapper">
-                    <button type="button" className="btn btn-secondary" onClick={ onBack }>
-                        <i className="bi bi-arrow-left-square"></i> Volver
-                    </button>
+                    <div className="container d-flex justify-content-between">
+                        <button type="button" className="btn btn-secondary" onClick={ onBack }>
+                            <i className="bi bi-arrow-left-square"></i> Volver
+                        </button>
 
-                    <button type="button" className="btn btn-primary" onClick={ onShowEditForm }>
-                        <i className="bi bi-pencil-square"></i> Editar
-                    </button>
-                </div>
-                <form onSubmit={ onSubmitEditForm }>
-                    <div className="recipe-wrapper">
-                        <div className="recipe-img-wrapper text-center">
-                            <img className="img-thumbnail" src={ recipeSelected.imagePath } alt={ recipeSelected.name } />
-                        </div>
-                        <div className="recipe-details">
-                            <h3 style={{ display: showEditForm ? 'none' : 'block' }}>{ recipeSelected.name }</h3>
-                            <input 
-                                type="text" 
-                                id="name"
-                                name="name"
-                                className="form-control" 
-                                style={{ display: showEditForm ? 'block' : 'none' }}
-                                placeholder="Nombre de la receta"
-                                value={ formState.name }
-                                onChange={ onInputValueChange }
-                            />
-
-                            <p style={{ display: showEditForm ? 'none' : 'block' }}>{ recipeSelected.description }</p>
-                            <textarea 
-                                id="description"
-                                name="description"
-                                className="form-control mt-3"
-                                style={{ display: showEditForm ? 'block' : 'none' }}
-                                rows="10" 
-                                placeholder="Descripción"
-                                value={ formState.description }
-                                onChange={ onInputValueChange }
-                            />
-                        </div>
-                    </div>
-
-                    <div style={{ display: showEditForm ? 'block' : 'none' }}>
-                        <div className="d-flex justify-content-between">
-                            <input 
-                                type="text"
-                                id="ingredient"
-                                name="ingredient"
-                                className="form-control"
-                                placeholder="Ingrediente"
-                                value={ formState.ingredient }
-                                onChange={ onInputValueChange }
-                            />
-                            <button 
-                                type="button" 
-                                className="btn btn-primary" 
-                                onClick={ onAddIngredient }
-                                disabled={ formState.ingredient === '' }
-                            >
-                                Agregar ingrediente
-                            </button>
-                        </div>
-                        
-                        {/* TODO: Usar un solo componente, ver de agregar una validacion en el "isEditable" */}
-                        <IngredientsList ingredientsList={ ingredients } isEditable={ true } onDeleteingredient={ deleteIngredient } />
-                    </div>
-
-                    <div style={{ display: showEditForm ? 'none' : 'block' }}>
-                        <IngredientsList ingredientsList={ ingredients } isEditable={ false } />
-                    </div>
-
-                    <div>
-                        <button type="submit" className="btn btn-primary" style={{ display: showEditForm ? 'block' : 'none' }}>
-                            Guardar cambios
+                        <button type="button" className="btn btn-primary" onClick={ onShowEditForm }>
+                            <i className="bi bi-pencil-square"></i> { showEditForm ? 'Deshacer' : 'Editar' }
                         </button>
                     </div>
-                </form>
+                </div>
+
+                <div className="container">
+                {
+                    loading ?
+                    loadingSpinner :
+                    <form>
+                        <div className="recipe-wrapper">
+                            <div className="recipe-img-wrapper text-center">
+                                <img src={ recipeSelected.imagePath } alt={ recipeSelected.name } style={{ display: showEditForm ? 'none' : 'block' }} />
+                                <input 
+                                    type="text" 
+                                    id="imagePath"
+                                    name="imagePath"
+                                    className="form-control" 
+                                    style={{ display: showEditForm ? 'block' : 'none' }}
+                                    placeholder="Ingrese URL de la imagen"
+                                    value={ formState.imagePath }
+                                    onChange={ onInputValueChange }
+                                />
+                            </div>
+                            <div className="recipe-details">
+                                <h3 style={{ display: showEditForm ? 'none' : 'block' }}>{ recipeSelected.name }</h3>
+                                <input 
+                                    type="text" 
+                                    id="name"
+                                    name="name"
+                                    className="form-control" 
+                                    style={{ display: showEditForm ? 'block' : 'none' }}
+                                    placeholder="Nombre de la receta"
+                                    value={ formState.name }
+                                    onChange={ onInputValueChange }
+                                />
+
+                                <p style={{ display: showEditForm ? 'none' : 'block' }}>{ recipeSelected.description }</p>
+                                <textarea 
+                                    id="description"
+                                    name="description"
+                                    className="form-control mt-3"
+                                    style={{ display: showEditForm ? 'block' : 'none' }}
+                                    rows="18" 
+                                    placeholder="Descripción"
+                                    value={ formState.description }
+                                    onChange={ onInputValueChange }
+                                />
+                            </div>
+                        </div>
+
+                        <div style={{ display: showEditForm ? 'block' : 'none' }}>
+                            <div className="d-flex justify-content-between mt-3">
+                                <input 
+                                    type="text"
+                                    id="ingredient"
+                                    name="ingredient"
+                                    className="form-control"
+                                    placeholder="Ingrediente"
+                                    value={ formState.ingredient }
+                                    onChange={ onInputValueChange }
+                                    onKeyUp={ onAddIngredient }
+                                />
+                                <button 
+                                    type="button" 
+                                    className="btn btn-primary" 
+                                    onClick={ onAddIngredient }
+                                    disabled={ formState.ingredient === '' }
+                                >
+                                    Agregar
+                                </button>
+                            </div>
+                            
+                            {/* TODO: Usar un solo componente, ver de agregar una validacion en el "isEditable" */}
+                            <IngredientsList ingredientsList={ ingredients } isEditable={ true } onDeleteingredient={ deleteIngredient } />
+                        </div>
+
+                        <div style={{ display: showEditForm ? 'none' : 'block' }}>
+                            <IngredientsList ingredientsList={ ingredients } isEditable={ false } />
+                        </div>
+
+                        <div>
+                            <button 
+                                type="button"
+                                className="btn btn-success" 
+                                style={{ display: showEditForm ? 'block' : 'none' }} 
+                                onClick={ onSubmitEditForm }
+                            >
+                                Guardar cambios
+                            </button>
+                        </div>
+                    </form>
+                }
+                </div>
             </div>
         </>
     )

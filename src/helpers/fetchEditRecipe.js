@@ -1,8 +1,9 @@
+import * as urls from '../helpers/constants/endpoints';
 
 
 export const fetchEditRecipe = async (requestBody, userToken) => {
 
-    const url = `https://backend-recipes-bootcamps-tribe.onrender.com/api/recipes/edit/${ requestBody._id }?auth=${ userToken }`;
+    const url = `${urls.BaseUrls}recipes/edit/${ requestBody._id }?auth=${ userToken }`;
 
     const requestOptions = {
         method: 'PUT',

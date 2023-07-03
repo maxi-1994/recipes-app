@@ -1,5 +1,8 @@
+import * as urls from '../helpers/constants/endpoints';
+
+
 export const fetchAddRecipe = async (requestBody, userToken) => {
-    const url = `https://backend-recipes-bootcamps-tribe.onrender.com/api/recipes/add?auth=${userToken}`;
+    const url = `${urls.BaseUrls}recipes/add?auth=${userToken}`;
 
     const requestOptions = {
         method: 'POST',

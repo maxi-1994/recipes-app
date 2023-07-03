@@ -9,7 +9,7 @@ export const toastMesseges = {
             pauseOnHover: false,
             draggable: true,
             progress: undefined,
-            theme: "light",
+            theme: "colored",
         }
     },
     editRecipeMsg: {
@@ -22,7 +22,7 @@ export const toastMesseges = {
             pauseOnHover: false,
             draggable: true,
             progress: undefined,
-            theme: "light",
+            theme: "colored",
         }
     },
     deleteRecipeMsg: {

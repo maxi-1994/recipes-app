@@ -1,7 +1,9 @@
+import * as urls from '../helpers/constants/endpoints';
+
 
 export const fetchAuth = async (requestBody, endpoint) => {
 
-    const url = `https://backend-recipes-bootcamps-tribe.onrender.com/api/auth/${endpoint}`;
+    const url = `${urls.BaseUrls}auth/${endpoint}`;
         
     const requestOptions = {
         method: 'POST',
