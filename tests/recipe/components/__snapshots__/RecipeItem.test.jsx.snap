@@ -44,3 +44,48 @@ exports[`Pruebas en <RecipeItem /> debe hacer match con el snapshot 1`] = `
   </div>
 </div>
 `;
+
+exports[`Test in <RecipeItem /> Should match with the snapshot 1`] = `
+<div>
+  <div
+    class="col"
+  >
+    <div
+      class="card"
+    >
+      <img
+        alt="pollo"
+        class="card-img-top"
+        src="https://www.gourmet.cl/wp-content/uploads/2022/05/Pollo-al-Horno-Web-570x458.jpg"
+      />
+      <div
+        class="card-body"
+      >
+        <h5
+          class="card-title"
+        >
+          pollo
+        </h5>
+        <p
+          class="card-text"
+        >
+          receta pollo
+        </p>
+      </div>
+      <div
+        class="card-footer d-flex justify-content-between"
+      >
+        <button
+          class="btn btn-danger"
+          type="button"
+        >
+          <i
+            class="bi bi-trash"
+          />
+           Eliminar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+`;
