@@ -7,9 +7,9 @@ import { RecipeApp } from './RecipeApp';
 import './styles.css'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  // <React.StrictMode>
+  <React.StrictMode>
     <BrowserRouter>
       <RecipeApp />
     </BrowserRouter>
-  // </React.StrictMode>,
+  </React.StrictMode>,
 )
